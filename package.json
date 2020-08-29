@@ -1,0 +1,26 @@
+{
+  "name": "pweb-store",
+  "version": "0.0.0",
+  "description": "PWEB Store project",
+  "repository": {
+    "url": "git@github.com:LucasVmigotto/pweb.git",
+    "type": "git"
+  },
+  "author": {
+    "name": "Lucas Vidor Migotto",
+    "email": "lvmigotto1@gmail.com"
+  },
+  "scripts": {
+    "postinstall": "lerna bootstrap",
+    "build": "lerna run --stream build",
+    "lint": "lerna run --stream lint",
+    "migrate": "lerna run --stream migrate:latest",
+    "test": "lerna run --stream test",
+    "test:coverage": "lerna run --stream test:coverage"
+  },
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "lerna": "^3.22.1"
+  }
+}

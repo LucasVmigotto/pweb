@@ -1,0 +1,70 @@
+version: '2'
+
+services:
+  pg:
+    image: postgres:11
+    environment:
+    - POSTGRES_USER
+    - POSTGRES_PASSWORD
+    - POSTGRES_DB
+    volumes:
+    - pg-data:/var/lib/postgresql/data
+
+  pgcli:
+    image: pygmy/pgcli
+    command: postgresql://$POSTGRES_USER:$POSTGRES_PASSWORD@pg/$POSTGRES_DB
+    stdin_open: true
+    tty: true
+    volumes:
+    - .:/app
+    - pgcli-home:/root
+    links:
+    - pg
+
+  api:
+    build:
+      context: ./docker
+      args:
+      - HTTP_PROXY
+      - HTTPS_PROXY
+      - NO_PROXY
+    command: yarn start:dev
+    working_dir: /app/packages/api
+    tty: true
+    environment:
+    - LOCAL_USER_ID
+    - POSTGRES_USER
+    - POSTGRES_PASSWORD
+    - POSTGRES_DB
+    ports:
+    - 4000:4000
+    - 9229:9229
+    volumes:
+    - .:/app:delegated
+    - home:/home/node
+    links:
+    - pg
+  
+  app:
+    build:
+      context: ./docker
+      args:
+      - HTTP_PROXY
+      - HTTPS_PROXY
+      - NO_PROXY
+    command: yarn dev
+    working_dir: /app/packages/app
+    environment:
+    - LOCAL_USER_ID
+    ports:
+    - 4001:4001
+    volumes:
+    - .:/app:delegated
+    - /home/node
+    links:
+    - api
+
+volumes:
+  pg-data:
+  pgcli-home:
+  home:

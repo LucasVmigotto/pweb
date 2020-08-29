@@ -1,0 +1,15 @@
+{
+  "name": "pweb-store-app",
+  "version": "0.0.0",
+  "description": "PWEB Store API",
+  "repository": {
+    "url": "git@github.com:LucasVmigotto/pweb.git",
+    "type": "git"
+  },
+  "author": {
+    "name": "Lucas Vidor Migotto",
+    "email": "lvmigotto1@gmail.com"
+  },
+  "license": "MIT",
+  "private": true
+}

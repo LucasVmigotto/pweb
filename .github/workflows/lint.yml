@@ -1,0 +1,35 @@
+name: PWEB Store Lint CI
+
+on:
+  push:
+    branches:
+      - projeto
+      - dev
+      - 'api/*'
+      - 'app/*'
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    name: Lint Code
+    if: "!contains(github.event.head_commit.message, 'skip-ci')"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: '14.8.0'
+      - name: Docker Image
+        uses: LucasVmigotto/pweb/docker@master
+      - name: Install dependencies
+        run: yarn
+      - name: Cache modules
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: ~/.yarn
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/yarn.lock') }}
+      - name: Lint
+        run: yarn run lint

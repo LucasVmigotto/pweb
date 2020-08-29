@@ -1,0 +1,50 @@
+name: SGPJ Test CI
+
+on:
+  pull_request:
+    branches:
+      - projeto
+      - dev
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    name: Test Code (no coverage)
+    if: "!contains(github.event.head_commit.message, 'skip-ci')"
+    services:
+      postgres:
+        image: postgres:11
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set up Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: '14.8.0'
+      - name: Docker Image
+        uses: LucasVmigotto/sgpj/docker@dev
+      - name: Set up Postgres
+        run: sudo apt-get -yqq install libpq-dev
+      - name: Install dependencies
+        run: yarn
+      - name: Cache modules
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: ~/.yarn
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/yarn.lock') }}
+      - name: Migrate
+        env:
+          PG_CONNECTION_STRING: ${{ secrets.PG_CONNECTION_STRING }}
+        run: yarn run migrate
+      - name: Test
+        env:
+          PG_CONNECTION_STRING: ${{ secrets.PG_CONNECTION_STRING }}
+        run: yarn test
