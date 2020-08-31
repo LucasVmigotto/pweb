@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset='utf-8'>
+        <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+        <title>Web3</title>
+        <meta name='viewport' content='width=device-width, initial-scale=1'>
+        <link rel="stylesheet" href="https://necolas.github.io/normalize.css/8.0.1/normalize.css">
+        <style>
+            * {
+                font-family: 'Times New Roman';
+            }
+            .title {
+                color: red;
+                font-size: 48px;
+                margin-top: 0;
+            }
+            .italic-part {
+                font-style: italic;
+            }
+            .bold-part {
+                font-weight: 700;
+            }
+        </style>
+    </head>
+    <body>
+        <h1 class="title">Contato</h1>
+        <p class="italic-part">Seja bem vindo, preencha o <span class="bold-part">formulário</span> abaixo para:</p>
+        <ul>
+            <li>duvidas</li>
+            <li>segestões</li>
+            <li>critícas</li>
+            <li>Orçamentos</li>
+        </ul>
+        <p>Caso queira ver nossos produtos, clique <a href="#">aqui</a></p>
+        <form>
+            <label for="name">
+                nome:
+            </label>
+            <input
+                name="name"
+                placeholder="digite o seu nome"
+                pattern="[a-zA-Z]{4,50}"
+            /><br />
+            <label for="email">
+                email:
+            </label>
+            <input
+                name="email"
+                type="email"
+                placeholder="digite o seu email"
+                
+            /><br />
+            <label for="telefone">
+                telefone:
+            </label>
+            <input
+                name="telefone"
+                pattern="^[0-9]{4,5}\-?[0-9]{4}$"
+                placeholder="digite o seu telefone"
+            /><br />
+            <label for="assunto">
+                assunto
+            </label>
+            <select
+                name="assunto"
+            >
+                <option>Dúvidas</option>
+            </select><br />
+            <span>Deseja receber uma cópia deste e-mail:</span>
+            <input
+                type="radio"
+                name="yep"
+            />
+            <label for="yep">
+                Sim
+            </label>
+            <input
+                type="radio"
+                name="nop"
+            />
+            <label for="nop">
+                Não
+            </label><br />
+            <label for="message">
+                mensagem:
+            </label>
+            <textarea
+                rows="4"
+                cols="32"
+                placeholder="digite aqui a sua mensagem"
+            ></textarea><br />
+            <input
+                type="submit"
+                value="Enviar"
+            />
+        </form>
+    </body>
+</html>
