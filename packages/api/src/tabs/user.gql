@@ -1,0 +1,56 @@
+mutation AuthorizationADMIN ($admin: String!) {
+  authorization(token: $admin) {
+    lawyerId
+    name
+    roles
+    createAt
+    updateAt
+  }
+}
+
+mutation AuthorizationLAWYER ($lawyer: String!) {
+  authorization(token: $lawyer) {
+    lawyerId
+    name
+    roles
+    createAt
+    updateAt
+  }
+}
+
+mutation Login {
+  login(credentials: {
+    email: "admin@admin.com",
+    password: "rootroot"
+  }) {
+    token
+    lawyer {
+      lawyerId
+      name
+      roles
+      user {
+        userId
+        email
+      }
+      createAt
+      updateAt
+    }
+  }
+}
+
+mutation UpdateEmail ($lawyer: String!) {
+  authorization(token: $lawyer) {
+    lawyerId
+  }
+  updateEmail(lawyerId: 2, email: "mailmail@mail.com") {
+    userId
+    email
+  }
+}
+
+mutation UpdatePassword ($lawyer: String!) {
+  authorization(token: $lawyer) {
+    lawyerId
+  }
+  updatePassword(lawyerId: 2, password: "rootroot")
+}
