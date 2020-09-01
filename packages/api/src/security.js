@@ -1,6 +1,5 @@
 const { verify } = require('jsonwebtoken')
 const config = require('./config')
-const { userInRoles } = require('./utils')
 
 const verifyToken = (token, secret) =>
   new Promise((resolve, reject) => {
