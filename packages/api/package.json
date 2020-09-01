@@ -1,15 +1,51 @@
 {
-  "name": "pweb-store-api",
+  "name": "pweb-api",
   "version": "0.0.0",
-  "description": "PWEB Store API",
+  "main": "src/index.js",
   "repository": {
-    "url": "git@github.com:LucasVmigotto/pweb.git",
-    "type": "git"
+    "type": "git",
+    "url": "git@github.com:LucasVmigotto/pweb.git"
   },
   "author": {
     "name": "Lucas Vidor Migotto",
     "email": "lvmigotto1@gmail.com"
   },
   "license": "MIT",
-  "private": true
+  "private": false,
+  "scripts": {
+    "start": "node -r dotenv/config src/index.js",
+    "start:dev": "nodemon --inspect=0.0.0.0:9229 -r dotenv/config src/index.js",
+    "migrate:make": "knex migrate:make",
+    "migrate:latest": "knex migrate:latest",
+    "migrate:rollback": "knex migrate:rollback --all",
+    "test": "NODE_ENV=test mocha 'test/**/*.test.js'",
+    "test:coverage": "rm -rf ./node_modules/.cache && rm -rf .nyc_output && rm -rf coverage/ && NODE_ENV=test nyc --reporter=text-summary --reporter=lcov mocha 'test/**/*.test.js'",
+    "test:watch": "NODE_ENV=test mocha --watch",
+    "lint": "standard"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "chai-as-promised": "^7.1.1",
+    "chai-http": "^4.3.0",
+    "debug": "^4.1.1",
+    "mocha": "^8.1.1",
+    "nodemon": "^2.0.4",
+    "nyc": "^15.1.0",
+    "standard": "^14.3.4",
+    "winston": "^3.3.3"
+  },
+  "dependencies": {
+    "apollo-server-express": "^2.9.16",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "graphql": "^14.5.8",
+    "graphql-fields": "^2.0.3",
+    "graphql-iso-date": "^3.6.1",
+    "humps": "^2.0.1",
+    "jsonwebtoken": "^8.5.1",
+    "knex": "^0.21.2",
+    "lodash": "^4.17.15",
+    "pg": "^8.3.0"
+  }
 }
