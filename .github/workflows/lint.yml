@@ -21,7 +21,7 @@ jobs:
         with:
           node-version: '14.8.0'
       - name: Docker Image
-        uses: LucasVmigotto/pweb/docker@master
+        uses: LucasVmigotto/pweb/docker@projeto
       - name: Install dependencies
         run: yarn
       - name: Cache modules

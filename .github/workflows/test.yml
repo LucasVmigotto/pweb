@@ -1,15 +1,14 @@
 name: SGPJ Test CI
 
 on:
-  pull_request:
+  push:
     branches:
       - projeto
-      - dev
 
 jobs:
   test:
     runs-on: ubuntu-latest
-    name: Test Code (no coverage)
+    name: Test Code
     if: "!contains(github.event.head_commit.message, 'skip-ci')"
     services:
       postgres:
@@ -28,7 +27,7 @@ jobs:
         with:
           node-version: '14.8.0'
       - name: Docker Image
-        uses: LucasVmigotto/sgpj/docker@dev
+        uses: LucasVmigotto/sgpj/docker@projeto
       - name: Set up Postgres
         run: sudo apt-get -yqq install libpq-dev
       - name: Install dependencies
