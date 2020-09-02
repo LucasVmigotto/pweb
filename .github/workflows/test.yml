@@ -27,7 +27,7 @@ jobs:
         with:
           node-version: '14.8.0'
       - name: Docker Image
-        uses: LucasVmigotto/sgpj/docker@projeto
+        uses: LucasVmigotto/pweb/docker@projeto
       - name: Set up Postgres
         run: sudo apt-get -yqq install libpq-dev
       - name: Install dependencies
