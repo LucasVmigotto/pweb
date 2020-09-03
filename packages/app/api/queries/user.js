@@ -22,9 +22,8 @@ const MUTATION_USER_CREATE = `
     }
   }
 `
-const MUTATION_USER_UPDATE = token => `
+const MUTATION_USER_UPDATE = `
   mutation ($userId: ID, $input: UserInput!) {
-    authorization(token: "${token}") { userId }
     persistUser(userId: $userId, input: $input) {
       userId
       name
@@ -43,7 +42,7 @@ export async function create ({ input }) {
   return persistUser
 }
 
-export async function update ({ token, userId, input }) {
-  const { persistUser } = await gql(MUTATION_USER_UPDATE(token), { userId, input })
+export async function update ({ userId, input }) {
+  const { persistUser } = await gql(MUTATION_USER_UPDATE, { userId, input })
   return persistUser
 }

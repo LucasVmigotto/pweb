@@ -48,11 +48,11 @@ const user = {
         commit('LOADING_CHANGED', false, { root: true })
       }
     },
-    async update ({ state, commit, dispatch }, { userId, input }) {
+    async update ({ commit, dispatch }, { userId, input }) {
       commit('LOADING_CHANGED', true, { root: true })
       try {
         await api.update({
-          token: state.token, userId, input
+          userId, input
         })
         dispatch('logout')
       } catch (err) {

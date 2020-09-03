@@ -1,49 +1,34 @@
 <template>
   <v-app>
-    <v-navigation-drawer
-      v-model="drawer"
-      expand-on-hover
-      :clipped="true"
-      fixed
-      app
-    >
-      <v-list>
-        <v-list-item>
-          <v-list-item-avatar>
-            <v-avatar
-              color="primary"
-              size="36"
-            >
-              <span>{{ avatarInitials() }}</span>
-            </v-avatar>
-          </v-list-item-avatar>
-          <v-list-item-content>
-            <v-list-item-title>{{ userLogged.name }}</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-        <v-list-item
-          v-for="(item, i) in items"
-          :key="i"
-          :to="item.to"
-          router
-          exact
-        >
-          <v-list-item-action>
-            <v-icon>{{ item.icon }}</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title v-text="item.title" />
-          </v-list-item-content>
-        </v-list-item>
-      </v-list>
-    </v-navigation-drawer>
     <v-app-bar
       :clipped-left="true"
       fixed
       app
     >
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
+      <v-app-bar-nav-icon>
+        <v-icon>mdi-basket</v-icon>
+      </v-app-bar-nav-icon>
       <v-toolbar-title v-text="title" />
+      <v-spacer />
+      <div v-if="userLogged">
+        <v-avatar
+          color="primary"
+          size="36"
+        >
+          <span>{{ avatarInitials() }}</span>
+        </v-avatar>
+        <span>{{ userLogged.name }}</span>
+      </div>
+      <div v-else>
+        <v-btn
+          color="primary"
+          outlined
+          @click="toLogin"
+        >
+          <v-icon>mdi-login-variant</v-icon>
+          Faça Login
+        </v-btn>
+      </div>
       <v-progress-linear
         v-show="loading"
         :loading="loading"
@@ -81,9 +66,9 @@ export default {
       drawer: true,
       items: [
         {
-          icon: 'mdi-apps',
+          icon: 'mdi-package',
           title: 'Products',
-          to: '/products'
+          to: '/index'
         }
       ]
     }
@@ -105,6 +90,9 @@ export default {
       const firstLetter = words[0].charAt(0)
       const lastLetter = words[words.length - 1].charAt(0)
       return `${firstLetter}${lastLetter}`
+    },
+    toLogin () {
+      this.$router.push({ name: 'login' })
     }
   }
 }

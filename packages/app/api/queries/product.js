@@ -1,25 +1,10 @@
 import { gql } from '../gql'
 
-const QUERY_LIST_PRODUCTS = token => `
+const QUERY_LIST_PRODUCTS = `
   query ($limit: Int, $offset: Int) {
-    viewer(token: "${token}") {
-      products(limit: $limti, offset: $offset) {
-        count
-        items {
-          productId
-          title
-          description
-          price
-        }
-      }
-    }
-  }
-`
-
-const QUERY_GET_PRODUCT = token => `
-  query ($productId: ID!) {
-    viewer(token: "${token}") {
-      product(productId: $productId) {
+    products(limit: $limti, offset: $offset) {
+      count
+      items {
         productId
         title
         description
@@ -29,33 +14,42 @@ const QUERY_GET_PRODUCT = token => `
   }
 `
 
-const MUTATION_PRODUCT_CREATE = token => `
+const QUERY_GET_PRODUCT = `
   query ($productId: ID!) {
-    viewer(token: "${token}") {
-      product(productId: $productId) {
-        productId
-        title
-        description
-        price
-      }
+    product(productId: $productId) {
+      productId
+      title
+      description
+      price
     }
   }
 `
 
-export async function list ({ token, limit = 4, offset = 0 }) {
+const MUTATION_PRODUCT_CREATE = `
+  query ($productId: ID!) {
+    product(productId: $productId) {
+      productId
+      title
+      description
+      price
+    }
+  }
+`
+
+export async function list ({ limit = 4, offset = 0 }) {
   const { products } = await gql(
-    QUERY_LIST_PRODUCTS(token), { limit, offset })
+    QUERY_LIST_PRODUCTS, { limit, offset })
   return products
 }
 
-export async function get ({ token, lawSuitId }) {
+export async function get ({ lawSuitId }) {
   const { product } = await gql(
-    QUERY_GET_PRODUCT(token), { lawSuitId })
+    QUERY_GET_PRODUCT, { lawSuitId })
   return product
 }
 
-export async function create ({ token, input }) {
+export async function create ({ input }) {
   const { persistProduct } = await gql(
-    MUTATION_PRODUCT_CREATE(token), { input })
+    MUTATION_PRODUCT_CREATE, { input })
   return persistProduct
 }

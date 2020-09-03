@@ -29,13 +29,12 @@ const product = {
     PAGE_CHANGED (state, page) { state.page = page }
   },
   actions: {
-    async list ({
-      state, commit, dispatch, rootState: { user: { token } }
-    }, { limit = state.limit, offset = state.offset } = {}) {
+    async list ({ state, commit, dispatch },
+      { limit = state.limit, offset = state.offset } = {}) {
       commit('LOADING_CHANGED', true, { root: true })
       try {
         const { count, items } = await api.list({
-          token, limit, offset
+          limit, offset
         })
         commit('PRODUCTS_CHANGED', items)
         commit('COUNT_CHANGED', count)
@@ -46,10 +45,10 @@ const product = {
         commit('LOADING_CHANGED', false, { root: true })
       }
     },
-    async get ({ commit, dispatch, rootState: { user: { token } } }, productId) {
+    async get ({ commit, dispatch }, productId) {
       commit('LOADING_CHANGED', true, { root: true })
       try {
-        const product = await api.get({ token, productId })
+        const product = await api.get({ productId })
         commit('PRODUCT_CHANGED', product)
       } catch (err) {
         commit('ERROR_CHANGED', err, { root: true })
@@ -58,12 +57,10 @@ const product = {
         commit('LOADING_CHANGED', false, { root: true })
       }
     },
-    async create ({
-      state, commit, dispatch, rootState: { user: { token } }
-    }, input) {
+    async create ({ state, commit, dispatch }, input) {
       commit('LOADING_CHANGED', true, { root: true })
       try {
-        await api.create({ token, input })
+        await api.create({ input })
         dispatch('list', {
           limit: state.limit,
           offset: state.offset
