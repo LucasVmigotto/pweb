@@ -102,8 +102,8 @@ const resolvers = {
       }
     },
     async persistUser (_, { userId, input }, { knex, user }) {
-      hasAuthorization(user)
       if (userId) {
+        hasAuthorization(user)
         const [newUser] = await knex('user')
           .update(decamelizeKeys({ ...input }))
           .where({ user_id: userId })

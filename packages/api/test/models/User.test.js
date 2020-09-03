@@ -164,7 +164,6 @@ describe('Models:Product', function () {
     const body = {
       query: `
         mutation ($input: UserInput!, $token: String!) {
-          authorization(token: $token) { userId }
           persistUser(input: $input) {
             userId
             name
@@ -173,7 +172,6 @@ describe('Models:Product', function () {
         }
       `,
       variables: {
-        token,
         input: {
           name: 'User',
           email: `${new Date().getMilliseconds()}@email.com`,
