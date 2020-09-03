@@ -1,7 +1,6 @@
 const { gql } = require('apollo-server-express')
 const { camelizeKeys, decamelizeKeys } = require('humps')
 const { cipher, signJWT } = require('../utils')
-const { tokenGraphQLResolver, hasAuthorization } = require('../security')
 
 const typeDefs = gql`
   type User {
@@ -32,13 +31,12 @@ const typeDefs = gql`
     user: User!
   }
 
-  extend type Viewer {
+  extend type Query {
     user(userId: ID!): User!
     users(limit: Int, offset: Int): UserList!
   }
 
   extend type Mutation {
-    authorization(token: String!): User!
     login(input: CredentialsInput!): UserAuth!
     persistUser(userId: ID, input: UserInput!): User!
     deleteUser(userId: ID!): Boolean
@@ -46,7 +44,7 @@ const typeDefs = gql`
 `
 
 const resolvers = {
-  Viewer: {
+  Query: {
     async user (_, { userId }, { knex }) {
       const [data] = await knex('user')
         .select(
@@ -76,7 +74,6 @@ const resolvers = {
     }
   },
   Mutation: {
-    authorization: tokenGraphQLResolver,
     async login (_, { input }, context) {
       const [res] = await context.knex('user')
         .select('user_id')
@@ -101,9 +98,8 @@ const resolvers = {
         user
       }
     },
-    async persistUser (_, { userId, input }, { knex, user }) {
+    async persistUser (_, { userId, input }, { knex }) {
       if (userId) {
-        hasAuthorization(user)
         const [newUser] = await knex('user')
           .update(decamelizeKeys({ ...input }))
           .where({ user_id: userId })
@@ -116,8 +112,7 @@ const resolvers = {
         return camelizeKeys(newUser)
       }
     },
-    async deleteUser (_, { userId }, { knex, user }) {
-      hasAuthorization(user)
+    async deleteUser (_, { userId }, { knex }) {
       const data = await knex('user')
         .where({ user_id: userId })
         .del()

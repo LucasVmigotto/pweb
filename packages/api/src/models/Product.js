@@ -1,6 +1,5 @@
 const { gql } = require('apollo-server-express')
 const { camelizeKeys, decamelizeKeys } = require('humps')
-const { hasAuthorization } = require('../security')
 
 const typeDefs = gql`
   type Product {
@@ -21,7 +20,7 @@ const typeDefs = gql`
     price: Float
   }
 
-  extend type Viewer {
+  extend type Query {
     product(productId: ID!): Product!
     products(limit: Int, offset: Int): ProductList!
   }
@@ -33,7 +32,7 @@ const typeDefs = gql`
 `
 
 const resolvers = {
-  Viewer: {
+  Query: {
     async product (_, { productId }, { knex }) {
       const [data] = await knex('product')
         .select(
@@ -65,8 +64,7 @@ const resolvers = {
     }
   },
   Mutation: {
-    async persistProduct (_, { productId, input }, { knex, user }) {
-      hasAuthorization(user)
+    async persistProduct (_, { productId, input }, { knex }) {
       if (productId) {
         const [newProduct] = await knex('product')
           .update(decamelizeKeys({ ...input }))
@@ -80,8 +78,7 @@ const resolvers = {
         return camelizeKeys(newProduct)
       }
     },
-    async deleteProduct (_, { productId }, { knex, user }) {
-      hasAuthorization(user)
+    async deleteProduct (_, { productId }, { knex }) {
       const data = await knex('product')
         .where({ product_id: productId })
         .del()

@@ -1,8 +1,7 @@
 const {
   expect,
   request,
-  handleResponseError,
-  generateToken
+  handleResponseError
 } = require('../utils')
 const config = require('../../src/config')
 const createApp = require('../../src/app')
@@ -10,7 +9,6 @@ const createApp = require('../../src/app')
 /* eslint-env mocha */
 /* eslint-disable no-unused-expressions */
 describe('Models:Product', function () {
-  const token = generateToken(true)
   let knex, httpServer
   before(function () {
     const {
@@ -27,15 +25,13 @@ describe('Models:Product', function () {
     let user = null
     it('users', async function () {
       const query = `
-        query ($token: String!) {
-          viewer(token: $token) {
-            users {
-              count
-              items {
-                userId
-                name
-                email
-              }
+        query {
+          users {
+            count
+            items {
+              userId
+              name
+              email
             }
           }
         }
@@ -43,14 +39,13 @@ describe('Models:Product', function () {
       const {
         body: {
           data: {
-            viewer: { users: { count, items } }
+            users: { count, items }
           }
         }
       } = await request(httpServer)
         .post(config.ENDPOINT)
         .send({
-          query,
-          variables: { token }
+          query
         })
         .then(handleResponseError)
       user = { ...items[0] }
@@ -61,26 +56,23 @@ describe('Models:Product', function () {
     })
     it('user', async function () {
       const query = `
-        query ($userId: ID!, $token: String!) {
-          viewer(token: $token) {
-            user (userId: $userId) {
-              userId
-              name
-              email
-            }
+        query ($userId: ID!) {
+          user (userId: $userId) {
+            userId
+            name
+            email
           }
         }
       `
       const {
         body: {
-          data: { viewer: { user: item } }
+          data: { user: item }
         }
       } = await request(httpServer)
         .post(config.ENDPOINT)
         .send({
           query,
           variables: {
-            token,
             userId: user.userId
           }
         })
@@ -125,45 +117,10 @@ describe('Models:Product', function () {
       expect(user).to.be.haveOwnProperty('name')
       expect(user).to.be.haveOwnProperty('email')
     })
-    describe('authorization', () => {
-      const body = valid => ({
-        query: `
-          mutation ($token: String!){
-            authorization(token: $token) {
-              userId
-              name
-              email
-            }
-          }
-        `,
-        variables: {
-          token: generateToken(valid)
-        }
-      })
-      it('authorization', async function () {
-        const {
-          body: { data: { authorization } }
-        } = await request(httpServer)
-          .post(config.ENDPOINT)
-          .send(body(true))
-          .then(handleResponseError)
-        expect(authorization).to.be.not.null
-        expect(authorization).to.haveOwnProperty('userId')
-        expect(authorization).to.haveOwnProperty('name')
-        expect(authorization).to.haveOwnProperty('email')
-      })
-      it('authorization - fail', async function () {
-        const { body: { errors: [{ message }] } } = await request(httpServer)
-          .post(config.ENDPOINT)
-          .send(body(false))
-        expect(message).to.be.not.null
-        expect(message).to.match(/invalid signature/)
-      })
-    })
     let user = null
     const body = {
       query: `
-        mutation ($input: UserInput!, $token: String!) {
+        mutation ($input: UserInput!) {
           persistUser(input: $input) {
             userId
             name
@@ -198,8 +155,7 @@ describe('Models:Product', function () {
     it('persistUser (update)', async function () {
       const body = {
         query: `
-          mutation ($token: String!, $userId: ID, $input: UserInput!) {
-            authorization(token: $token) { userId }
+          mutation ($userId: ID, $input: UserInput!) {
             persistUser(userId: $userId, input: $input) {
               userId
               name
@@ -208,7 +164,6 @@ describe('Models:Product', function () {
           }
         `,
         variables: {
-          token,
           userId: user.userId,
           input: {
             name: 'User CHANGED',
@@ -223,7 +178,6 @@ describe('Models:Product', function () {
         }
       } = await request(httpServer)
         .post(config.ENDPOINT)
-        .set('authorization', `Bearer ${token}`)
         .send(body)
         .then(handleResponseError)
       expect(persistUser).to.be.not.null
@@ -234,8 +188,7 @@ describe('Models:Product', function () {
     })
     it('deleteUser', async function () {
       const query = `
-        mutation ($token: String!, $userId: ID!) {
-          authorization(token: $token) { userId }
+        mutation ($userId: ID!) {
           deleteUser(userId: $userId)
         }
       `
@@ -248,7 +201,6 @@ describe('Models:Product', function () {
         .send({
           query,
           variables: {
-            token,
             userId: user.userId
           }
         })

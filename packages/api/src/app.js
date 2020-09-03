@@ -5,7 +5,6 @@ module.exports = config => {
   const { ApolloServer } = require('apollo-server-express')
   const { GraphQLError } = require('graphql')
   const { createContext } = require('./context')
-  const { tokenExpressResolver } = require('./security')
 
   const app = express()
 
@@ -49,8 +48,6 @@ module.exports = config => {
     context: { logger, knex },
     debug: config.APOLLO_SERVER_DEBUG
   })
-
-  app.use(tokenExpressResolver)
 
   apolloServer.applyMiddleware({ app, path: endpoint })
 
