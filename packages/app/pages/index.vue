@@ -1,97 +1,84 @@
 <template>
-  <v-layout
-    column
-    justify-center
-    align-center
-  >
-    <v-flex
-      xs12
-      sm8
-      md6
-    >
-      <div class="text-center">
-        <logo />
-        <vuetify-logo />
-      </div>
-      <v-card>
-        <v-card-title class="headline">
-          Welcome to the Vuetify + Nuxt.js template
-        </v-card-title>
-        <v-card-text>
-          <p>Vuetify is a progressive Material Design component framework for Vue.js. It was designed to empower developers to create amazing applications.</p>
-          <p>
-            For more information on Vuetify, check out the <a
-              href="https://vuetifyjs.com"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              documentation
-            </a>.
-          </p>
-          <p>
-            If you have questions, please join the official <a
-              href="https://chat.vuetifyjs.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-              title="chat"
-            >
-              discord
-            </a>.
-          </p>
-          <p>
-            Find a bug? Report it on the github <a
-              href="https://github.com/vuetifyjs/vuetify/issues"
-              target="_blank"
-              rel="noopener noreferrer"
-              title="contribute"
-            >
-              issue board
-            </a>.
-          </p>
-          <p>Thank you for developing with Vuetify and I look forward to bringing more exciting features in the future.</p>
-          <div class="text-xs-right">
-            <em><small>&mdash; John Leider</small></em>
-          </div>
-          <hr class="my-3">
-          <a
-            href="https://nuxtjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Nuxt Documentation
-          </a>
-          <br>
-          <a
-            href="https://github.com/nuxt/nuxt.js"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Nuxt GitHub
-          </a>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer />
-          <v-btn
-            color="primary"
-            nuxt
-            to="/inspire"
-          >
-            Continue
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-flex>
-  </v-layout>
+  <v-app>
+    <v-card>
+      <v-card-title>PWEB Store</v-card-title>
+      <v-card-text>
+        <v-form ref="form">
+          <v-text-field
+            v-model="email"
+            :rules="[ rules.required, rules.validMail ]"
+            label="E-mail"
+            hint="username@email.com"
+            prepend-icon="mdi-account"
+            clearable
+          />
+          <v-text-field
+            v-model="password"
+            :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+            :type="showPassword ? 'text' : 'password'"
+            :rules="[ rules.required ]"
+            prepend-icon="mdi-lock"
+            label="Senha"
+            hint="******"
+            @click:append="showPassword = !showPassword"
+          />
+        </v-form>
+      </v-card-text>
+      <v-card-actions>
+        <v-btn
+          large
+          block
+          color="primary"
+          :disabled="invalidForm"
+          :loading="loading"
+          @click="subbmitLogin"
+        >
+          Log in<v-icon>mdi-login-variant</v-icon>
+        </v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-app>
 </template>
 
 <script>
-import Logo from '~/components/Logo.vue'
-import VuetifyLogo from '~/components/VuetifyLogo.vue'
-
+import { mapGetters, mapActions } from 'vuex'
 export default {
-  components: {
-    Logo,
-    VuetifyLogo
+  layout: 'login',
+  data: () => ({
+    email: '',
+    password: '',
+    showPassword: false,
+    rules: {
+      required: value => !!value || 'Campo obrigatório',
+      validMail: value => !!value
+        .match(/^[\w\d]+@[\w\d]+(\.\w+)+$/) || 'O E-mail inserido é inválido'
+    }
+  }),
+  computed: {
+    ...mapGetters(['loading']),
+    invalidForm () {
+      return (
+        !this.email ||
+        !this.email.match(/^[\w\d]+@[\w\d]+(\.\w+)+$/) ||
+        !this.password ||
+        this.password.length < 7
+      )
+    }
+  },
+  methods: {
+    ...mapActions('user', ['login']),
+    subbmitLogin () {
+      this.login({
+        input: {
+          email: this.email,
+          password: this.password
+        }
+      }).then((res) => {
+        this.$router.push({ name: 'products' })
+      }).catch((err) => {
+        throw new Error(err)
+      })
+    }
   }
 }
 </script>
