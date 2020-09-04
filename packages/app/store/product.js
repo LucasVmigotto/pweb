@@ -5,7 +5,7 @@ const product = {
   state: () => ({
     products: [],
     product: null,
-    limit: 5,
+    limit: 100,
     offset: 0,
     count: 0,
     page: 0,

@@ -1,56 +1,65 @@
-mutation AuthorizationADMIN ($admin: String!) {
-  authorization(token: $admin) {
-    lawyerId
-    name
-    roles
-    createAt
-    updateAt
-  }
-}
-
-mutation AuthorizationLAWYER ($lawyer: String!) {
-  authorization(token: $lawyer) {
-    lawyerId
-    name
-    roles
-    createAt
-    updateAt
-  }
-}
-
-mutation Login {
-  login(credentials: {
-    email: "admin@admin.com",
-    password: "rootroot"
-  }) {
-    token
-    lawyer {
-      lawyerId
-      name
-      roles
-      user {
-        userId
-        email
-      }
-      createAt
-      updateAt
-    }
-  }
-}
-
-mutation UpdateEmail ($lawyer: String!) {
-  authorization(token: $lawyer) {
-    lawyerId
-  }
-  updateEmail(lawyerId: 2, email: "mailmail@mail.com") {
+query User{
+  user (userId: 1) {
     userId
+    name
     email
   }
 }
 
-mutation UpdatePassword ($lawyer: String!) {
-  authorization(token: $lawyer) {
-    lawyerId
+query Users{
+  users {
+    count
+    items {
+      userId
+      name
+      email
+    }
   }
-  updatePassword(lawyerId: 2, password: "rootroot")
+}
+
+mutation Login {
+  login(input: {
+    email: "admin@admin.com"
+    password: "rootroot"
+  }) {
+    token
+    user {
+      userId
+      name
+      email
+    }
+  }
+}
+
+mutation Create {
+  persistUser(input: {
+    name: "Someone"
+    email: "some1@mail.com"
+    password: "rootroot"
+  }) {
+    userId
+    name
+    email
+    password
+  }
+}
+
+mutation Update {
+  persistUser(
+    userId: ""
+    input: {
+    	name: "CHANGED"
+    	email: "someoneCHANGED@mail.com"
+    	password: "rootroot"
+  	}
+  ) {
+    userId
+    name
+    email
+    password
+  }
+}
+
+mutation Delete {
+  deleteUser (userId: "")
 }
