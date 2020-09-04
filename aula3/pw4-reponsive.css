@@ -1,0 +1,74 @@
+* {
+    font-family: 'Times New Roman';
+}
+
+h1 {
+    color: red;
+    font-size: 48px;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.italic-part {
+    font-style: italic;
+}
+
+#bold-part {
+    font-weight: 700;
+}
+
+li {
+    padding: 3px;
+}
+
+label {
+    font-weight: 700;
+}
+
+.row {
+    justify-content: space-around;
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.second {
+    justify-content: left;  
+}
+
+.field {
+    padding: 5px;
+    display: flex;
+    align-items: center;
+}
+
+.options {
+    font-size: .95rem;
+    justify-content: space-between;
+}
+
+.message {
+    justify-content: left;
+}
+
+.button {
+    justify-content: center;
+}
+
+.send {
+    width: 70%;
+}
+
+@media screen and (min-width: 600px) {
+    .options {
+        width: 30em;
+        font-size: 1rem;
+    }
+    .second {
+        justify-content: space-around;
+    }
+    .message {
+        width: 100%;
+        justify-content: center;
+    }
+}
