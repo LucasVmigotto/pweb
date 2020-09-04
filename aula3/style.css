@@ -1,0 +1,30 @@
+* {
+    font-family: 'Times New Roman';
+}
+
+h1 {
+    color: red;
+    font-size: 48px;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.italic-part {
+    font-style: italic;
+}
+
+#bold-part {
+    font-weight: 700;
+}
+
+li {
+    padding: 3px;
+}
+
+label {
+    font-weight: 700;
+}
+
+.field {
+    padding: 5px;
+}
