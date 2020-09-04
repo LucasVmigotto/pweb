@@ -101,13 +101,22 @@ const resolvers = {
     async persistUser (_, { userId, input }, { knex }) {
       if (userId) {
         const [newUser] = await knex('user')
-          .update(decamelizeKeys({ ...input }))
+          .update(decamelizeKeys(input.password
+              ? {
+                ...input,
+                password: cipher(input.password)
+              }
+              : { ...input }
+            ))
           .where({ user_id: userId })
           .returning('*')
         return camelizeKeys(newUser)
       } else {
         const [newUser] = await knex('user')
-          .insert(decamelizeKeys({ ...input }))
+          .insert(decamelizeKeys({
+            ...input,
+            password: cipher(input.password)
+          }))
           .returning('*')
         return camelizeKeys(newUser)
       }

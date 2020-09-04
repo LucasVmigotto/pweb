@@ -1,10 +1,12 @@
 import product from './product'
 import user from './user'
+import cart from './cart'
 
 const store = {
   modules: {
     product,
-    user
+    user,
+    cart
   },
   state: () => ({
     loading: false,

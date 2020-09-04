@@ -21,6 +21,7 @@ const user = {
         const { token, user } = await api.login(login)
         commit('USER_LOGGED_CHANGED', user)
         commit('TOKEN_CHANGED', token)
+        return !!token
       } catch (err) {
         commit('ERROR_CHANGED', err, { root: true })
         dispatch('setError', err, { root: true })
@@ -36,7 +37,7 @@ const user = {
       try {
         const data = await api.create({ input })
         dispatch('login', {
-          login: {
+          input: {
             email: data.email,
             password: input.password
           }
