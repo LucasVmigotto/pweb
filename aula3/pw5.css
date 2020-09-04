@@ -1,0 +1,34 @@
+body {
+    background-color: red;
+}
+#greenBox {
+    background-color: forestgreen;
+    width: 100%;
+    height: 150px;
+}
+#row {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    float: left;
+}
+#blueBox {
+    background-color: steelblue;
+    width: 100%;
+    height: 150px;
+}
+#yellowBox {
+    background-color: gold;
+    width: 100%;
+    height: 150px;
+}
+@media screen and (min-width: 600px) {
+    #blueBox {
+        width: 50%;
+        height: 430px;
+    }
+    #yellowBox {
+        width: 50%;
+        height: 430px;
+    }
+}
