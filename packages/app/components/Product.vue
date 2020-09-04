@@ -68,10 +68,10 @@ export default {
   },
   methods: {
     moreInfo () {
-      this.$emit('info', this.productId)
+      this.$emit('info', this.product.productId)
     },
     toCart () {
-      this.$emit('cart', this.productId)
+      this.$emit('cart', this.product.productId)
     }
   }
 }

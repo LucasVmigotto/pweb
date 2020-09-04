@@ -9,15 +9,27 @@
         @info="moreInfo"
       />
     </v-row>
+    <product-viewer
+      :dialog="viewerDialog"
+      @close="viewerDialog = false"
+      @cart="toCart"
+    />
   </v-layout>
 </template>
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import Product from '../components/Product'
+import ProductViewer from '../components/ProductViewer'
 
 export default {
-  components: { Product },
+  components: {
+    Product,
+    ProductViewer
+  },
+  data: () => ({
+    viewerDialog: false
+  }),
   computed: {
     ...mapGetters('user', [
       'userLogged'
@@ -32,13 +44,22 @@ export default {
   methods: {
     ...mapActions(['pushMessage']),
     ...mapActions('product', [
-      'list'
+      'list',
+      'get'
     ]),
     ...mapActions('cart', [
       'add'
     ]),
-    moreInfo (productId) {},
+    moreInfo (productId) {
+      this.get(productId)
+        .then((res) => {
+          if (res && res.productId) {
+            this.viewerDialog = true
+          }
+        })
+    },
     toCart (productId) {
+      this.viewerDialog = false
       if (this.userLogged) {
         this.add(this.products
           .filter(el => el.product === productId)[0])

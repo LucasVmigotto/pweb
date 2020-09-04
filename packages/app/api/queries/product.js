@@ -42,9 +42,9 @@ export async function list ({ limit = 4, offset = 0 }) {
   return products
 }
 
-export async function get ({ lawSuitId }) {
+export async function get ({ productId }) {
   const { product } = await gql(
-    QUERY_GET_PRODUCT, { lawSuitId })
+    QUERY_GET_PRODUCT, { productId })
   return product
 }
 

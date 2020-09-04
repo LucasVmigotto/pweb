@@ -13,7 +13,13 @@ const product = {
   }),
   getters: {
     products (state) { return state.products },
-    product (state) { return state.product },
+    product (state) {
+      return state.product || {
+        title: '',
+        description: '',
+        price: 0
+      }
+    },
     limit (state) { return state.limit },
     offset (state) { return state.offset },
     count (state) { return state.count },
@@ -50,6 +56,7 @@ const product = {
       try {
         const product = await api.get({ productId })
         commit('PRODUCT_CHANGED', product)
+        return product
       } catch (err) {
         commit('ERROR_CHANGED', err, { root: true })
         dispatch('setError', err, { root: true })
