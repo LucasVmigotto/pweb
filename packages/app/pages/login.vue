@@ -37,17 +37,33 @@
         </v-btn>
       </v-card-actions>
     </v-card>
+    <v-btn
+      class="mt-9"
+      color="primary"
+      @click="addDialog = true"
+    >
+      Não tem cadastro? Registre-se!
+    </v-btn>
+    <user-add
+      :dialog="addDialog"
+      @save="addUser"
+      @close="addDialog = false"
+    />
   </v-app>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+import UserAdd from '../components/UserAdd'
+
 export default {
+  components: { UserAdd },
   layout: 'login',
   data: () => ({
     email: '',
     password: '',
     showPassword: false,
+    addDialog: false,
     rules: {
       required: value => !!value || 'Campo obrigatório',
       validMail: value => !!value
@@ -66,7 +82,13 @@ export default {
     }
   },
   methods: {
-    ...mapActions('user', ['login']),
+    ...mapActions([
+      'pushMessage'
+    ]),
+    ...mapActions('user', [
+      'login',
+      'create'
+    ]),
     subbmitLogin () {
       this.login({
         input: {
@@ -78,6 +100,17 @@ export default {
       }).catch((err) => {
         throw new Error(err)
       })
+    },
+    addUser (user) {
+      this.addDialog = false
+      this.create(user)
+        .then((res) => {
+          this.pushMessage({
+            type: 'success',
+            text: 'Seu cadastro foi realizado com sucesso!'
+          })
+          this.$router.push({ name: 'index' })
+        })
     }
   }
 }

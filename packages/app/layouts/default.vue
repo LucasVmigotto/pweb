@@ -18,6 +18,13 @@
           <span>{{ avatarInitials() }}</span>
         </v-avatar>
         <span>{{ userLogged.name }}</span>
+        <v-badge
+          :value="cartCount > 0"
+          :content="cartCount"
+          right
+        >
+          <v-icon>mdi-cart</v-icon>
+        </v-badge>
       </div>
       <div v-else>
         <v-btn
@@ -82,6 +89,9 @@ export default {
     ]),
     ...mapGetters('user', [
       'userLogged'
+    ]),
+    ...mapGetters('cart', [
+      'cartCount'
     ])
   },
   methods: {

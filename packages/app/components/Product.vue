@@ -1,8 +1,5 @@
 <template>
-  <v-col
-    class="mx-2"
-    cols="4"
-  >
+  <v-col cols="4">
     <v-card>
       <v-img
         class="white--text align-end"
@@ -19,20 +16,44 @@
           {{ product.description }}
         </span>
       </v-card-text>
-      <v-card-action>
-        <v-btn
-          color="primary"
-          @click="moreInfo"
-        >
-          <v-icon>mdi-plus</v-icon> Info
-        </v-btn>
-        <v-btn
-          color="primary"
-          @click="toCart"
-        >
-          <v-icon>mdi-plus</v-icon> Info
-        </v-btn>
-      </v-card-action>
+      <v-card-actions>
+        <v-container>
+          <v-row>
+            <v-col cols="3">
+              <v-tooltip top>
+                <template v-slot:activator="{ on }">
+                  <v-btn
+                    x-large
+                    icon
+                    color="primary"
+                    v-on="on"
+                    @click="toCart"
+                  >
+                    <v-icon>mdi-plus</v-icon>
+                  </v-btn>
+                </template>
+                <span>Adicionar no carrinho</span>
+              </v-tooltip>
+            </v-col>
+            <v-col cols="3">
+              <v-tooltip top>
+                <template v-slot:activator="{ on }">
+                  <v-btn
+                    x-large
+                    icon
+                    color="green"
+                    v-on="on"
+                    @click="moreInfo"
+                  >
+                    <v-icon>mdi-cart</v-icon>
+                  </v-btn>
+                </template>
+                <span>Mais informações</span>
+              </v-tooltip>
+            </v-col>
+          </v-row>
+        </v-container>
+      </v-card-actions>
     </v-card>
   </v-col>
 </template>
@@ -46,9 +67,11 @@ export default {
     }
   },
   methods: {
-    moreInfo () {},
+    moreInfo () {
+      this.$emit('info', this.productId)
+    },
     toCart () {
-
+      this.$emit('cart', this.productId)
     }
   }
 }
