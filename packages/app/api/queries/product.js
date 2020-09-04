@@ -2,7 +2,7 @@ import { gql } from '../gql'
 
 const QUERY_LIST_PRODUCTS = `
   query ($limit: Int, $offset: Int) {
-    products(limit: $limti, offset: $offset) {
+    products(limit: $limit, offset: $offset) {
       count
       items {
         productId

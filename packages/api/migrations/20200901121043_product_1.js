@@ -8,7 +8,7 @@ exports.up = async function (knex) {
   return knex('product')
     .insert({
       title: 'Algo aleatório',
-      description: 'Não vai acrescentar em nada na sua vida, acredite...',
+      description: 'Mais além do princípio de prazer, os processos oníricos — e, por extensão, todo o inconsciente — vela a enunciação que delimita o campo de intervenção do analista. Por outro lado, o inconsciente estruturado como linguagem opera não per via di porre, e sim per via di levare que delimita o campo de intervenção do analista ',
       price: 49.99
     })
 }
