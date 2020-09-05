@@ -62,7 +62,7 @@ export default {
       this.viewerDialog = false
       if (this.userLogged) {
         this.add(this.products
-          .filter(el => el.product === productId)[0])
+          .filter(el => el.productId === productId)[0])
       } else {
         this.pushMessage({
           text: 'Faça login para adicionar ao seu carrinho',

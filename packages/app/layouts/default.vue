@@ -23,7 +23,9 @@
           :content="cartCount"
           right
         >
-          <v-icon>mdi-cart</v-icon>
+          <v-icon @click="goToCart">
+            mdi-cart
+          </v-icon>
         </v-badge>
       </div>
       <div v-else>
@@ -103,6 +105,9 @@ export default {
     },
     toLogin () {
       this.$router.push({ name: 'login' })
+    },
+    goToCart () {
+      this.$router.push({ name: 'cart' })
     }
   }
 }

@@ -102,12 +102,12 @@ const resolvers = {
       if (userId) {
         const [newUser] = await knex('user')
           .update(decamelizeKeys(input.password
-              ? {
-                ...input,
-                password: cipher(input.password)
-              }
-              : { ...input }
-            ))
+            ? {
+              ...input,
+              password: cipher(input.password)
+            }
+            : { ...input }
+          ))
           .where({ user_id: userId })
           .returning('*')
         return camelizeKeys(newUser)

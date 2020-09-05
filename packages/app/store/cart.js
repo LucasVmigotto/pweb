@@ -17,9 +17,9 @@ const cart = {
         product
       ])
     },
-    remove ({ state, commit }, productId) {
+    remove ({ state, commit }, index) {
       commit('CART_CHANGED', state.cart
-        .filter(el => el.productId !== productId))
+        .filter((_, position) => index !== position))
     },
     empty ({ commit }) {
       commit('CART_CHANGED', [])
