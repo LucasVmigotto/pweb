@@ -1,5 +1,5 @@
 module.exports = ({ endpoint, readFile }) => ({
   endpoint,
-  name: 'User',
-  query: readFile('./user.gql')
+  name: 'Product',
+  query: readFile('./product.gql')
 })

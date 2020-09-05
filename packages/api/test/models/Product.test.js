@@ -1,8 +1,7 @@
 const {
   expect,
   request,
-  handleResponseError,
-  generateToken
+  handleResponseError
 } = require('../utils')
 const config = require('../../src/config')
 const createApp = require('../../src/app')
@@ -10,7 +9,6 @@ const createApp = require('../../src/app')
 /* eslint-env mocha */
 /* eslint-disable no-unused-expressions */
 describe('Models:Product', function () {
-  const token = generateToken(true)
   let knex, httpServer
   before(function () {
     const {
@@ -27,31 +25,24 @@ describe('Models:Product', function () {
     let product = null
     it('products', async function () {
       const query = `
-        query ($token: String!) {
-          viewer(token: $token) {
-            products {
-              count
-              items {
-                productId
-                title
-                description
-                price
-              }
+        query {
+          products {
+            count
+            items {
+              productId
+              title
+              description
+              price
             }
           }
         }
       `
       const {
-        body: {
-          data: {
-            viewer: { products: { count, items } }
-          }
-        }
+        body: { data: { products: { count, items } } }
       } = await request(httpServer)
         .post(config.ENDPOINT)
         .send({
-          query,
-          variables: { token }
+          query
         })
         .then(handleResponseError)
       product = { ...items[0] }
@@ -62,27 +53,24 @@ describe('Models:Product', function () {
     })
     it('product', async function () {
       const query = `
-        query ($productId: ID!, $token: String!) {
-          viewer(token: $token) {
-            product (productId: $productId) {
-              productId
-              title
-              description
-              price
-            }
+        query ($productId: ID!) {
+          product (productId: $productId) {
+            productId
+            title
+            description
+            price
           }
         }
       `
       const {
         body: {
-          data: { viewer: { product: item } }
+          data: { product: item }
         }
       } = await request(httpServer)
         .post(config.ENDPOINT)
         .send({
           query,
           variables: {
-            token,
             productId: product.productId
           }
         })
@@ -98,8 +86,7 @@ describe('Models:Product', function () {
     let product = null
     const body = {
       query: `
-        mutation ($input: ProductInput!, $token: String!) {
-          authorization(token: $token) { userId }
+        mutation ($input: ProductInput!) {
           persistProduct(input: $input) {
             productId
             title
@@ -109,7 +96,6 @@ describe('Models:Product', function () {
         }
       `,
       variables: {
-        token,
         input: {
           title: 'Product',
           description: 'A Sample product',
@@ -137,8 +123,7 @@ describe('Models:Product', function () {
     it('persistProduct (update)', async function () {
       const body = {
         query: `
-          mutation ($token: String!, $productId: ID, $input: ProductInput!) {
-            authorization(token: $token) { userId }
+          mutation ($productId: ID, $input: ProductInput!) {
             persistProduct(productId: $productId, input: $input) {
               productId
               title
@@ -148,7 +133,6 @@ describe('Models:Product', function () {
           }
         `,
         variables: {
-          token,
           productId: product.productId,
           input: {
             title: 'Product CHANGED',
@@ -163,7 +147,6 @@ describe('Models:Product', function () {
         }
       } = await request(httpServer)
         .post(config.ENDPOINT)
-        .set('authorization', `Bearer ${token}`)
         .send(body)
         .then(handleResponseError)
       expect(persistProduct).to.be.not.null
@@ -175,8 +158,7 @@ describe('Models:Product', function () {
     })
     it('deleteProduct', async function () {
       const query = `
-        mutation ($token: String!, $productId: ID!) {
-          authorization(token: $token) { userId }
+        mutation ($productId: ID!) {
           deleteProduct(productId: $productId)
         }
       `
@@ -189,7 +171,6 @@ describe('Models:Product', function () {
         .send({
           query,
           variables: {
-            token,
             productId: product.productId
           }
         })

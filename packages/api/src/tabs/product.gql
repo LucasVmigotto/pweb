@@ -1,0 +1,53 @@
+query Product {
+   product(productId: 1) {
+    productId
+    title
+    description
+    price
+  }
+}
+
+query Products {
+   products {
+    count
+    items {
+      productId
+      title
+      description
+      price
+    }
+  }
+}
+
+mutation Create {
+  persistProduct(input: {
+    title: "Something #"
+    description: "Percebemos, cada vez mais, que a execução dos pontos do programa desafia a capacidade de equalização do investimento em reciclagem técnica. Por outro lado, o início da atividade geral de formação de atitudes assume importantes posições no estabelecimento do sistema de formação de quadros que corresponde às necessidades."
+    price: 9.9
+  }) {
+    productId
+    title
+    description
+    price
+  }
+}
+
+mutation Update {
+  persistProduct(
+    productId: ""
+    input: {
+    	title: "CHANGED"
+    	description: "As experiências acumuladas demonstram que a competitividade nas transações comerciais representa uma abertura para a melhoria das direções preferenciais no sentido do progresso. Evidentemente, o consenso sobre a necessidade de qualificação exige a precisão e a definição do sistema de participação geral."
+    	price: 9.9
+  	}
+  ) {
+    productId
+    title
+    description
+    price
+  }
+}
+
+mutation Delete {
+  deleteProduct(productId: "")
+}
