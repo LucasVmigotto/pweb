@@ -1,4 +1,4 @@
-name: SGPJ Test CI
+name: PWEB Store Test CI
 
 on:
   push:
