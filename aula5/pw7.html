@@ -1,0 +1,69 @@
+<!doctype html>
+<html>
+	<head>
+	 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	</head>
+	<body>
+        <input
+            id="n1"
+            placeholder="Primeiro Número"
+            type="number"
+        />
+        <select id="opt">
+            <option value="sum">&#43;</option>
+            <option value="sub">&#45;</option>
+            <option value="tim">&#215;</option>
+            <option value="div">&#247;</option>
+        </select>
+        <input
+            id="n2"
+            placeholder="Segundo Número"
+            type="number"
+        />
+        <button
+            type="button"
+            onclick="calc()"
+        >
+            &#61;
+        </button>
+        <input
+            id="result"
+            placeholder="Resultado"
+            disabled
+        />
+    </body>
+</html>
+<script lang="javascript">
+    function calc () {
+        const num1 = parseInt(n1.value, 10)
+        const num2 = parseInt(n2.value, 10)
+        if (!num1) {
+            alert('Insira o primeiro número')
+            n1.focus()
+            return false
+        }
+        if (!num2) {
+            alert('Insira o segundo número')
+            n2.focus()
+            return false
+        }
+        switch (opt.value) {
+            case 'sum':
+                result.value = num1 + num2
+            break
+            case 'sub':
+                result.value = num1 - num2
+            break
+            case 'tim':
+                result.value = num1 * num2
+            break
+            case 'div':
+                if (num2 === 0) {
+                    result.value = 'Não existe divisão por zero'
+                    return
+                }
+                result.value = num1 / num2
+            break
+        }
+    }
+</script>
