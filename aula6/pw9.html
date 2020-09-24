@@ -1,0 +1,146 @@
+<!doctype html>
+<html>
+	<head>
+	 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    </head>
+	<body>
+        <div class="row col-xs-offset-4">
+            <div class="col-xs-12">
+                <h1>Contato</h1>
+                <p>Seja bem vindo, preencha o <span>formulário</span> abaixo para:</p>
+                <ul>
+                    <li>duvidas</li>
+                    <li>segestões</li>
+                    <li>critícas</li>
+                    <li>Orçamentos</li>
+                </ul>
+                <p>Caso queira ver nossos produtos, clique <a href="#">aqui</a></p>
+            </div>
+        </div>
+        <form>
+            <div class="for-group row col-xs-offset-4">
+                <label
+                    class="col-xs-2"
+                    for="nome"
+                >
+                    nome:
+                </label>
+                <div class="col-xs-10">
+                    <input
+                        id="nome"
+                        name="nome"
+                        placeholder="digite o seu nome"
+                        pattern="[a-zA-Z]{4,50}"
+                    />
+                </div>
+                <label
+                    class="col-xs-2"
+                    for="email"
+                >
+                    email:
+                </label>
+                <div class="col-xs-10">
+                    <input
+                        id="email"
+                        name="email"
+                        type="email"
+                        placeholder="digite o seu email"
+                        />
+                </div>
+                <label
+                    class="col-xs-2"
+                    for="telefone"
+                >
+                    telefone:
+                </label>
+                <div class="col-xs-10">
+                    <input
+                        id="telefone"
+                        name="telefone"
+                        placeholder="digite o seu telefone"
+                    />
+                </div>
+            </div>
+            <div class="form-group row col-xs-offset-4">
+                <label
+                    class="col-xs-2"
+                    for="assunto"
+                >
+                    assunto
+                </label>
+                <div class="col-xs-10">
+                    <select
+                        id="assunto"
+                        name="assunto"
+                    >
+                        <option>Dúvidas</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row col-xs-offset-4">
+                <span>Deseja receber uma cópia deste e-mail:</span>
+                <input
+                    type="radio"
+                    name="yep"
+                    checked
+                />
+                <label for="yep">
+                    Sim
+                </label>
+                <input
+                    type="radio"
+                    name="nop"
+                />
+                <label for="nop">
+                    Não
+                </label>
+            </div>
+            <div class="form-group row col-xs-offset-4">
+                <label
+                    class="col-xs-2"
+                    for="message">
+                    mensagem:
+                </label>
+                <div class="col-xs-10">
+                    <textarea
+                        id="message"
+                        rows="4"
+                        cols="32"
+                        placeholder="digite aqui a sua mensagem"
+                    ></textarea>
+                </div>
+            </div>
+            <div class="col-xs-12 text-center">
+                <button
+                    id="button"
+                    type="button"
+                >
+                    Enviar
+                </button>
+            </div>
+        </form>
+        <p
+            id="presentation"
+            class="col-xs-offset-4"
+        ></p>
+	</body>
+</html>	
+<script lang="javascript">
+    const getVal = key =>
+        $(`#${key}`).val()
+
+    $('#button').on('click', e => {
+        e.preventDefault()
+        $('#presentation').html(`
+            Nome: ${getVal('nome')}<br />
+            Email: ${getVal('telefone')}<br />
+            Telefone: ${getVal('email')}<br />
+            Assunto: ${getVal('assunto')}<br />
+            Mensagem: ${getVal('message')}<br />
+        `)
+    })
+</script>
