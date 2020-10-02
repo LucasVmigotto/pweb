@@ -51,6 +51,22 @@ const product = {
         commit('LOADING_CHANGED', false, { root: true })
       }
     },
+    async listByName ({ state, commit, dispatch },
+      { limit = state.limit, offset = state.offset, name } = {}) {
+      commit('LOADING_CHANGED', true, { root: true })
+      try {
+        const { count, items } = await api.listByName({
+          limit, offset, name
+        })
+        commit('PRODUCTS_CHANGED', items)
+        commit('COUNT_CHANGED', count)
+      } catch (err) {
+        commit('ERROR_CHANGED', err, { root: true })
+        dispatch('setError', err, { root: true })
+      } finally {
+        commit('LOADING_CHANGED', false, { root: true })
+      }
+    },
     async get ({ commit, dispatch }, productId) {
       commit('LOADING_CHANGED', true, { root: true })
       try {
