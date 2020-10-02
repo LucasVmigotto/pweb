@@ -51,6 +51,37 @@ describe('Models:Product', function () {
       expect(items).to.be.not.null
       expect(items).to.be.an('array')
     })
+    it('products - by name', async function () {
+      const query = `
+        query ($name: String) {
+          products(name: $name) {
+            count
+            items {
+              productId
+              title
+              description
+              price
+            }
+          }
+        }
+      `
+      const {
+        body: { data: { products: { count, items } } }
+      } = await request(httpServer)
+        .post(config.ENDPOINT)
+        .send({
+          query,
+          variables: {
+            name: 'Al'
+          }
+        })
+        .then(handleResponseError)
+      expect(count).to.be.not.null
+      expect(count).to.be.an('number')
+      expect(items).to.be.not.null
+      expect(items).to.be.an('array')
+      expect(items.length).to.be.equal(1)
+    })
     it('product', async function () {
       const query = `
         query ($productId: ID!) {

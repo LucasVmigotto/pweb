@@ -22,7 +22,7 @@ const typeDefs = gql`
 
   extend type Query {
     product(productId: ID!): Product!
-    products(limit: Int, offset: Int): ProductList!
+    products(limit: Int, offset: Int, name: String): ProductList!
   }
 
   extend type Mutation {
@@ -44,16 +44,30 @@ const resolvers = {
         .where({ 'product.product_id': productId })
       return camelizeKeys(data)
     },
-    async products (_, { limit = 100, offset = 0 }, { knex }) {
-      const data = await knex('product')
-        .select(
-          'product_id',
-          'title',
-          'description',
-          'price'
-        )
-        .limit(limit)
-        .offset(offset)
+    async products (_, { limit = 100, offset = 0, name }, { knex }) {
+      let data = null
+      if (name) {
+        data = await knex('product')
+          .select(
+            'product_id',
+            'title',
+            'description',
+            'price'
+          )
+          .limit(limit)
+          .offset(offset)
+          .where('title', 'like', `%${name}%`)
+      } else {
+        data = await knex('product')
+          .select(
+            'product_id',
+            'title',
+            'description',
+            'price'
+          )
+          .limit(limit)
+          .offset(offset)
+      }
       const [{ count }] = await knex('product').count('product_id')
       return {
         count,
