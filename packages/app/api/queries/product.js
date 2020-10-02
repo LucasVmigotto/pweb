@@ -14,6 +14,20 @@ const QUERY_LIST_PRODUCTS = `
   }
 `
 
+const QUERY_LIST_PRODUCTS_BY_NAME = `
+  query ($limit: Int, $offset: Int, $name: String) {
+    products(limit: $limit, offset: $offset, name: $name) {
+      count
+      items {
+        productId
+        title
+        description
+        price
+      }
+    }
+  }
+`
+
 const QUERY_GET_PRODUCT = `
   query ($productId: ID!) {
     product(productId: $productId) {
@@ -39,6 +53,12 @@ const MUTATION_PRODUCT_CREATE = `
 export async function list ({ limit = 4, offset = 0 }) {
   const { products } = await gql(
     QUERY_LIST_PRODUCTS, { limit, offset })
+  return products
+}
+
+export async function listByName ({ limit = 4, offset = 0, name }) {
+  const { products } = await gql(
+    QUERY_LIST_PRODUCTS_BY_NAME, { limit, offset, name })
   return products
 }
 
