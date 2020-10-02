@@ -7,8 +7,20 @@ query Product {
   }
 }
 
-query Products {
-   products {
+query ProductsList {
+   products(limit: 100, offset: 0) {
+    count
+    items {
+      productId
+      title
+      description
+      price
+    }
+  }
+}
+
+query ProductsLitsByName {
+   products(name: "") {
     count
     items {
       productId
