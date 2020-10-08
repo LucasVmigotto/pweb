@@ -45,9 +45,9 @@
                     {{ item.description }}
                   </span>
                 </v-list-item-subtitle>
-                <v-list-item-avatar>
+                <v-list-item-text>
                   <span>R$ {{ item.price }}</span>
-                </v-list-item-avatar>
+                </v-list-item-text>
                 <v-list-item-action>
                   <v-tooltip left>
                     <template v-slot:activator="{ on }">
