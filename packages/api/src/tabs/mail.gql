@@ -1,0 +1,14 @@
+mutation RemeberPassword {
+  rememberPassword (email: "admin@admin.com") {
+    from {
+      name
+      email
+    }
+    to {
+      name
+      email
+    }
+    subject
+    message
+  }
+}

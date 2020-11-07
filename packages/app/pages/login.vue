@@ -44,6 +44,20 @@
     >
       Não tem cadastro? Registre-se!
     </v-btn>
+    <v-tooltip top>
+      <template v-slot:activator="{ on }">
+        <v-btn
+          :disabled="!emailFilled"
+          class="mt-9"
+          color="primary"
+          v-on="on"
+          @click="rememberPassword"
+        >
+          Esqueci a senha
+        </v-btn>
+      </template>
+      <span>Lembrar senha</span>
+    </v-tooltip>
     <user-add
       :dialog="addDialog"
       @save="addUser"
@@ -54,6 +68,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+import { remember } from '../api/queries/mail'
 import UserAdd from '../components/UserAdd'
 
 export default {
@@ -79,6 +94,10 @@ export default {
         !this.password ||
         this.password.length < 7
       )
+    },
+    emailFilled () {
+      return !!this.email &&
+        this.email.match(/^[\w\d]+@[\w\d]+(\.\w+)+$/)
     }
   },
   methods: {
@@ -96,7 +115,9 @@ export default {
           password: this.password
         }
       }).then((res) => {
-        this.$router.push({ name: 'index' })
+        if (res) {
+          this.$router.push({ name: 'index' })
+        }
       }).catch((err) => {
         throw new Error(err)
       })
@@ -111,6 +132,25 @@ export default {
           })
           this.$router.push({ name: 'index' })
         })
+    },
+    rememberPassword () {
+      if (this.emailFilled) {
+        remember(this.email)
+          .then((res) => {
+            console.log(res)
+            if (res && res.to && res.to.email) {
+              this.pushMessage({
+                type: 'success',
+                text: `E-mail com lembrete de senha enviado para ${res.to.email}`
+              })
+            }
+          })
+      } else {
+        this.pushMessage({
+          type: 'warning',
+          text: 'Preencha o campo de email'
+        })
+      }
     }
   }
 }

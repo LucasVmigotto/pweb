@@ -4,7 +4,8 @@ const createApp = require('./app')
 const {
   apolloServer,
   httpServer,
-  logger
+  logger,
+  transport
 } = createApp(config)
 
 const { PORT, HOST, ENDPOINT } = config
@@ -24,6 +25,7 @@ const close = async () => {
   if (close.closed) return
   close.closed = true
   logger.info('Server closing...')
+  transport.close()
   await apolloServer.stop()
   await new Promise(resolve => httpServer.close(resolve))
   logger.info('Server Closed')
