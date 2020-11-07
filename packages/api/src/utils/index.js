@@ -84,11 +84,15 @@ const UserTypes = {
 const userInRoles = (user, role = UserTypes.LAWYER) =>
   user.roles.includes(role) || user.roles.includes(UserTypes.ADMIN)
 
+const mountAddress = ({ name, email }) =>
+  `${name} <${email}>`
+
 module.exports = {
   cipher,
   signJWT,
   UserTypes,
   userInRoles,
+  mountAddress,
   defineType,
   promiseHandler,
   getClients,

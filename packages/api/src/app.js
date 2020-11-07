@@ -12,7 +12,7 @@ module.exports = config => {
 
   const { typeDefs, resolvers } = require('./models')
 
-  const { logger, knex } = createContext(config)
+  const { logger, knex, transport } = createContext(config)
 
   app.use(cors())
 
@@ -45,7 +45,7 @@ module.exports = config => {
     formatError,
     playground,
     tracing: true,
-    context: { logger, knex },
+    context: { logger, knex, transport },
     debug: config.APOLLO_SERVER_DEBUG
   })
 
@@ -53,5 +53,5 @@ module.exports = config => {
 
   const httpServer = http.createServer(app)
 
-  return { app, apolloServer, httpServer, knex, logger }
+  return { app, apolloServer, httpServer, knex, transport, logger }
 }
